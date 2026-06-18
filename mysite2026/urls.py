@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.http import HttpResponse
+from django.shortcuts import render
+
 
 
 def info(request) :
@@ -29,6 +31,12 @@ def info(request) :
     return HttpResponse(res_text) 
 
 
-urlpatterns = [path('info/',info),
+
+def home(request):
+    return render(request,'index.html')
+
+urlpatterns = [
+    path('',home),
+    path('info/',info),
     path('admin/', admin.site.urls),
 ]

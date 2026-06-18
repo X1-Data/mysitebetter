@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METAVerse 2026 — The Next Generation Portal</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --bg-dark: #080710;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(0, 242, 254, 0.15);
+            --primary-glow: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --secondary-glow: linear-gradient(135deg, #f02fc2 0%, #6094ea 100%);
+            --accent-green: #00ff87;
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Canvas Particle Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* Ambient Orbs */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.18;
+            z-index: -1;
+            pointer-events: none;
+            animation: float-orb 20s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, #00f2fe, #4facfe);
+            top: -10%;
+            right: -10%;
+        }
+
+        .orb-2 {
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, #f02fc2, #6094ea);
+            bottom: -20%;
+            left: -10%;
+            animation-duration: 30s;
+        }
+
+        @keyframes float-orb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-8%, 10%) scale(1.15); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            border: 2px solid var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 242, 254, 0.4);
+        }
+
+        /* Navigation Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(8, 7, 16, 0.3);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            padding: 1rem 4rem;
+            background: rgba(8, 7, 16, 0.85);
+            border-bottom: 1px solid rgba(0, 242, 254, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            background: var(--primary-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-glow);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn-portal {
+            font-family: var(--font-display);
+            background: transparent;
+            border: 1px solid #00f2fe;
+            color: #f8fafc;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        .btn-portal::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: var(--primary-glow);
+            transition: all 0.5s ease;
+            z-index: -1;
+            transform: translate(-50%, -50%) scale(0);
+            border-radius: 50%;
+        }
+
+        .btn-portal:hover {
+            color: #080710;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-portal:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8rem 4rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            gap: 2rem;
+        }
+
+        .hero-content {
+            flex: 1.2;
+            z-index: 10;
+        }
+
+        .badge {
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #00f2fe;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            animation: pulse-border 2s infinite alternate;
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 5px rgba(0, 242, 254, 0.1); }
+            100% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.3); }
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 4.8rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .hero-title span.gradient-text {
+            background: var(--primary-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-glow);
+            color: #080710;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            font-family: var(--font-display);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 242, 254, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Right (Visual Interaction Element) */
+        .hero-visual {
+            flex: 0.8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 450px;
+        }
+
+        .visual-core {
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,242,254,0.1) 0%, rgba(8,7,16,0) 70%);
+            border: 2px dashed rgba(0, 242, 254, 0.3);
+            position: relative;
+            animation: rotate-dashed 20s linear infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        @keyframes rotate-dashed {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .visual-core::after {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            border: 1px solid rgba(240, 47, 194, 0.25);
+            animation: rotate-dashed 12s linear infinite reverse;
+        }
+
+        .cyber-orb {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f2fe, #f02fc2);
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.6), inset 0 0 20px rgba(255,255,255,0.4);
+            animation: pulse-orb 4s infinite alternate ease-in-out;
+            z-index: 2;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .visual-core:hover .cyber-orb {
+            transform: scale(1.25) rotate(45deg);
+            box-shadow: 0 0 80px rgba(240, 47, 194, 0.8), inset 0 0 30px rgba(255,255,255,0.6);
+        }
+
+        @keyframes pulse-orb {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        /* Live HUD Panel */
+        .hud-panel {
+            position: absolute;
+            bottom: -20px;
+            right: 0;
+            background: rgba(8, 7, 16, 0.8);
+            border: 1px solid var(--border-glow);
+            padding: 1.2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            min-width: 250px;
+            z-index: 15;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .hud-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hud-label {
+            color: var(--text-secondary);
+        }
+
+        .hud-val {
+            color: var(--accent-green);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .hud-val.pulse::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: inline-block;
+            animation: indicator 1s infinite alternate;
+        }
+
+        @keyframes indicator {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        /* Features Section */
+        .section-features {
+            padding: 8rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-subtitle {
+            font-family: var(--font-display);
+            color: #00f2fe;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 800;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 242, 254, 0.03) 0%, rgba(0,0,0,0) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 242, 254, 0.08);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00f2fe;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon-wrapper {
+            background: var(--primary-glow);
+            color: #080710;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            transform: rotate(10deg);
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Tech Spec Section with Slider / Swiper UI */
+        .specs-section {
+            padding: 8rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .specs-container {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 4rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .specs-nav {
+            flex: 0.8;
+        }
+
+        .spec-tab {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+        }
+
+        .spec-tab.active {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(0, 242, 254, 0.2);
+            box-shadow: inset 0 0 15px rgba(0, 242, 254, 0.05);
+        }
+
+        .spec-tab-number {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.15);
+            transition: color 0.3s ease;
+        }
+
+        .spec-tab.active .spec-tab-number {
+            color: #00f2fe;
+        }
+
+        .spec-tab-info h4 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .spec-tab-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .specs-display {
+            flex: 1.2;
+            height: 380px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .spec-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .spec-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .spec-slide-icon {
+            font-size: 3rem;
+            color: #f02fc2;
+            margin-bottom: 1.5rem;
+        }
+
+        .spec-slide h3 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            background: var(--secondary-glow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .spec-slide p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* Interactive Footer Area */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(4, 4, 8, 0.9);
+            padding: 4rem 4rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            color: #00f2fe;
+            background: rgba(0, 242, 254, 0.08);
+            border-color: #00f2fe;
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+        }
+
+        .footer-copy {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 10rem;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-desc {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hud-panel {
+                position: relative;
+                bottom: 0;
+                margin-top: 2rem;
+                width: 100%;
+            }
+
+            .specs-container {
+                flex-direction: column;
+                padding: 2rem;
+            }
+
+            header {
+                padding: 1.5rem 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas for Particle Stars System -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Glowing ambient spots -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <!-- Navigation Header -->
+    <header id="main-header">
+        <div class="logo">
+            <i data-lucide="shield-alert" style="color: #00f2fe;"></i>
+            METASITE 26
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#specs">Specs</a></li>
+            <li><a href="/info/">System Info</a></li>
+        </ul>
+        <button class="btn-portal" onclick="location.href='/info/'">ENTER HUB</button>
+    </header>
+
+    <!-- Hero Portal Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="badge">
+                <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+                Dynamic Engine Active
+            </div>
+            <h1 class="hero-title">
+                The Gateway to<br>
+                <span class="gradient-text">Absolute Freedom</span>
+            </h1>
+            <p class="hero-desc">
+                Welcome to METASITE 2026. Experience a beautiful, lightning-fast response web standard built natively on top of Python Django. Discover rich interfaces and modern aesthetics.
+            </p>
+            <div class="hero-actions">
+                <button class="btn-primary" onclick="alert('Welcome onboard! Interactive Particle System is active on your cursor.')">Explore Core</button>
+                <button class="btn-secondary" onclick="window.scrollTo({top: document.getElementById('features').offsetTop - 80, behavior: 'smooth'})">Learn Features</button>
+            </div>
+        </div>
+        
+        <div class="hero-visual">
+            <div class="visual-core" id="interactive-core">
+                <div class="cyber-orb"></div>
+            </div>
+            
+            <!-- Real-time HUD Panel containing Dynamic Django & Browser Values -->
+            <div class="hud-panel">
+                <div class="hud-line">
+                    <span class="hud-label">HOST STATUS</span>
+                    <span class="hud-val pulse">ONLINE</span>
+                </div>
+                <div class="hud-line">
+                    <span class="hud-label">YOUR LOCAL IP</span>
+                    <span class="hud-val" id="hud-ip">{{ request.META.REMOTE_ADDR|default:"127.0.0.1" }}</span>
+                </div>
+                <div class="hud-line">
+                    <span class="hud-label">FPS VALUE</span>
+                    <span class="hud-val" id="hud-fps" style="color: #00f2fe;">60.00</span>
+                </div>
+                <div class="hud-line">
+                    <span class="hud-label">BROWSER AGENT</span>
+                    <span class="hud-val" id="hud-agent" style="font-size: 0.65rem; color: #f02fc2; text-align: right; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Client User</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section-features" id="features">
+        <div class="section-header">
+            <span class="section-subtitle">Premium Ecosystem</span>
+            <h2 class="section-title">Engineered to Perfection</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">
+                    <i data-lucide="zap"></i>
+                </div>
+                <h3>Supercharged Dev</h3>
+                <p>Designed with vanilla components, optimized DOM tree performance, and custom particle interaction framework for visual bliss.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">
+                    <i data-lucide="cpu"></i>
+                </div>
+                <h3>Intelligent HUD</h3>
+                <p>Fully dynamic dashboard showing real-time FPS counter, client details, and server request variables automatically.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <h3>Secured Core</h3>
+                <p>Robust backend powered by Django 6, ensuring absolute protection against common security vulnerabilities out-of-the-box.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specs Tab Section -->
+    <section class="specs-section" id="specs">
+        <div class="section-header">
+            <span class="section-subtitle">Deep Dive Specs</span>
+            <h2 class="section-title">Technical Specifications</h2>
+        </div>
+        
+        <div class="specs-container">
+            <div class="specs-nav">
+                <div class="spec-tab active" data-target="spec-django">
+                    <span class="spec-tab-number">01</span>
+                    <div class="spec-tab-info">
+                        <h4>Django 6 Backend</h4>
+                        <p>High scalability and clean MVC architecture</p>
+                    </div>
+                </div>
+                <div class="spec-tab" data-target="spec-canvas">
+                    <span class="spec-tab-number">02</span>
+                    <div class="spec-tab-info">
+                        <h4>Fluid CSS & Canvas</h4>
+                        <p>Beautiful rich interactive graphics</p>
+                    </div>
+                </div>
+                <div class="spec-tab" data-target="spec-lucide">
+                    <span class="spec-tab-number">03</span>
+                    <div class="spec-tab-info">
+                        <h4>Lucide Vector System</h4>
+                        <p>Sleek and lightweight iconography</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specs-display">
+                <div class="spec-slide active" id="spec-django">
+                    <i data-lucide="layers" class="spec-slide-icon"></i>
+                    <h3>Django 6 Architecture</h3>
+                    <p>Designed for fast and reliable APIs, server side rendering capability, secure templates using CSRF tokens, and robust object relational mapping.</p>
+                </div>
+                
+                <div class="spec-slide" id="spec-canvas">
+                    <i data-lucide="palette" class="spec-slide-icon"></i>
+                    <h3>Interactive Particle System</h3>
+                    <p>Features an animated background and active mouse cursor tracking, rendering beautiful glowing dots on-demand without slowing down user interactions.</p>
+                </div>
+
+                <div class="spec-slide" id="spec-lucide">
+                    <i data-lucide="gem" class="spec-slide-icon"></i>
+                    <h3>Vector Precision</h3>
+                    <p>Renders crystal clear vector representations on high DPI displays. Adaptive style colors and size mappings match modern high-end web designs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <i data-lucide="shield-alert" style="color: #00f2fe;"></i>
+                METASITE 26
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-link"><i data-lucide="github"></i></a>
+                <a href="#" class="social-link"><i data-lucide="twitter"></i></a>
+                <a href="#" class="social-link"><i data-lucide="globe"></i></a>
+            </div>
+            <p class="footer-copy">&copy; 2026 METASITE. Crafted for world-class web standards.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interactive Effects -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Header Scroll Effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Interactive Specs Slider
+        const tabs = document.querySelectorAll('.spec-tab');
+        const slides = document.querySelectorAll('.spec-slide');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.dataset.target;
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                slides.forEach(s => s.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+
+        // Set User Agent in HUD
+        document.getElementById('hud-agent').innerText = navigator.userAgent;
+
+        // FPS Counter
+        let frameCount = 0;
+        let lastTime = performance.now();
+        const fpsVal = document.getElementById('hud-fps');
+
+        function updateFPS() {
+            frameCount++;
+            const now = performance.now();
+            if (now - lastTime >= 1000) {
+                const fps = (frameCount * 1000) / (now - lastTime);
+                fpsVal.innerText = fps.toFixed(2);
+                frameCount = 0;
+                lastTime = now;
+            }
+            requestAnimationFrame(updateFPS);
+        }
+        requestAnimationFrame(updateFPS);
+
+        // Core Interaction Hover
+        const core = document.getElementById('interactive-core');
+        core.addEventListener('click', () => {
+            // Spawn rapid particles
+            for (let i = 0; i < 20; i++) {
+                particles.push(new Particle(window.innerWidth / 2 + (Math.random() - 0.5) * 200, window.innerHeight / 2 + (Math.random() - 0.5) * 200));
+            }
+        });
+
+        // Particle System
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x || Math.random() * width;
+                this.y = y || Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.radius = Math.random() * 2 + 1;
+                this.alpha = Math.random() * 0.5 + 0.1;
+                this.decay = Math.random() * 0.002 + 0.001;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(0, 242, 254, ${this.alpha})`;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#00f2fe';
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Edge bounce / wrap
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
+
+        // Cursor Tracking Particles
+        window.addEventListener('mousemove', (e) => {
+            if (Math.random() < 0.15) {
+                particles.push(new Particle(e.clientX, e.clientY));
+            }
+            if (particles.length > 150) {
+                particles.shift();
+            }
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // Draw connections
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 242, 254, ${0.15 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
