@@ -1,0 +1,76 @@
+{% extends 'chopee/base.html' %}
+
+{% block title %}Order #{{ order_id }} Tracking - Chopee{% endblock %}
+
+{% block content %}
+<div class="tracking-container">
+    <div class="tracking-success-banner">
+        <i class="fa-solid fa-circle-check"></i>
+        <div>
+            <h3>Order Placed Successfully!</h3>
+            <p>Thank you {{ order.name }}! Your order has been received.</p>
+        </div>
+    </div>
+
+    <div class="tracking-card">
+        <div class="tracking-header">
+            <h2>Order Tracking</h2>
+            <p class="order-id-badge">Order ID: <strong>#{{ order_id }}</strong></p>
+        </div>
+
+        <div class="tracking-status">
+            <div class="status-step active">
+                <div class="step-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                <div class="step-text">Order Placed</div>
+                <div class="step-date">Just now</div>
+            </div>
+            <div class="status-line"></div>
+            <div class="status-step">
+                <div class="step-icon"><i class="fa-solid fa-warehouse"></i></div>
+                <div class="step-text">Processing</div>
+                <div class="step-date">Pending</div>
+            </div>
+            <div class="status-line"></div>
+            <div class="status-step">
+                <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                <div class="step-text">Shipped</div>
+                <div class="step-date">Pending</div>
+            </div>
+            <div class="status-line"></div>
+            <div class="status-step">
+                <div class="step-icon"><i class="fa-solid fa-box-open"></i></div>
+                <div class="step-text">Delivered</div>
+                <div class="step-date">Pending</div>
+            </div>
+        </div>
+
+        <div class="order-details-summary">
+            <h3><i class="fa-solid fa-location-dot"></i> Delivery Details</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Recipient</span>
+                    <span>{{ order.name }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Address</span>
+                    <span>{{ order.address }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Total Paid</span>
+                    <span class="text-primary">฿{{ order.total }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Estimated Delivery</span>
+                    <span>2–3 Business Days</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tracking-actions">
+            <a href="{% url 'chopee:home' %}" class="btn btn-primary">
+                <i class="fa-solid fa-bag-shopping"></i> Continue Shopping
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

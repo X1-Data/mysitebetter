@@ -1,0 +1,135 @@
+{% extends 'chopee/base.html' %}
+{% load static %}
+
+{% block title %}Chopee - Shop Online, Save Big!{% endblock %}
+
+{% block content %}
+<div class="home-container">
+
+    <!-- Vouchers -->
+    <section class="vouchers-section">
+        <div class="vouchers-header">
+            <span class="voucher-label"><i class="fa-solid fa-ticket"></i> VOUCHERS &amp; DEALS</span>
+            <a href="#" class="voucher-see-all">See All <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+        <div class="vouchers-grid">
+            {% for v in vouchers %}
+            <div class="voucher-card">
+                <div class="voucher-left">
+                    <span class="voucher-value">{{ v.value }}</span>
+                    <span class="voucher-min">{{ v.condition }}</span>
+                </div>
+                <div class="voucher-right">
+                    <button class="btn-claim" onclick="this.textContent='Claimed!'; this.classList.add('claimed')">Claim</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <div class="banner-slide banner-slide--orange">
+            <div class="banner-content">
+                <p class="banner-tag">🔥 LIMITED TIME OFFER</p>
+                <h2>Super Flash Deals!</h2>
+                <p>Up to <strong>90% OFF</strong> on premium brands</p>
+                <a href="#flash-deals" class="btn btn-primary">Shop Now &nbsp;<i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories-section">
+        <h3 class="section-title"><i class="fa-solid fa-grip"></i> &nbsp;CATEGORIES</h3>
+        <div class="category-grid">
+            {% for cat in categories %}
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="{{ cat.icon }}"></i>
+                </div>
+                <p>{{ cat.name }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Flash Deals -->
+    <section class="flash-deals-section" id="flash-deals">
+        <div class="flash-deals-header">
+            <div class="flash-title">
+                <span class="flash-icon">⚡</span>
+                <h3>FLASH DEALS</h3>
+            </div>
+            <div class="countdown" id="countdown">
+                <span class="countdown-block"><span id="cd-hours">03</span><small>H</small></span>
+                <span class="countdown-sep">:</span>
+                <span class="countdown-block"><span id="cd-mins">29</span><small>M</small></span>
+                <span class="countdown-sep">:</span>
+                <span class="countdown-block"><span id="cd-secs">59</span><small>S</small></span>
+            </div>
+        </div>
+        <div class="flash-deals-scroll">
+            {% for deal in flash_deals %}
+            <a href="{% url 'chopee:product_detail' deal.id %}" class="product-card flash-card">
+                <div class="product-image">
+                    <img src="{{ deal.image }}" alt="{{ deal.name }}" loading="lazy">
+                    <span class="discount-badge">-{{ deal.discount }}%</span>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-price">฿{{ deal.price }}</h4>
+                    <p class="original-price-small">฿{{ deal.original_price }}</p>
+                    <div class="sales-progress">
+                        <div class="progress-bar" style="width: 82%;"></div>
+                        <span>Selling Fast!</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Daily Discover -->
+    <section class="daily-discover-section">
+        <div class="section-tabs">
+            <h3 class="active-tab">DAILY DISCOVER</h3>
+        </div>
+        <div class="products-grid">
+            {% for product in products %}
+            <a href="{% url 'chopee:product_detail' product.id %}" class="product-card">
+                <div class="product-image">
+                    <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy">
+                    {% if product.discount %}<span class="discount-badge">-{{ product.discount }}%</span>{% endif %}
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">{{ product.name }}</h4>
+                    <div class="product-meta">
+                        <span class="product-price">฿{{ product.price }}</span>
+                        <span class="sales-count">{{ product.sales }} sold</span>
+                    </div>
+                    <div class="product-rating">
+                        <i class="fa-solid fa-star"></i> {{ product.rating }}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+
+<script>
+(function() {
+    let total = 3 * 3600 + 29 * 60 + 59;
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function tick(){
+        if(total <= 0) return;
+        total--;
+        document.getElementById('cd-hours').textContent = pad(Math.floor(total/3600));
+        document.getElementById('cd-mins').textContent  = pad(Math.floor((total%3600)/60));
+        document.getElementById('cd-secs').textContent  = pad(total%60);
+    }
+    setInterval(tick, 1000);
+})();
+</script>
+{% endblock %}

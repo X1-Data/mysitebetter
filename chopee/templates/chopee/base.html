@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chopee - Shop Online, Save Big!{% endblock %}</title>
+    <meta name="description" content="Chopee - Southeast Asia's leading e-commerce marketplace. Best deals, flash sales, and free shipping.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'chopee/css/style.css' %}">
+</head>
+<body>
+
+<header class="chopee-header">
+    <div class="header-top">
+        <div class="header-container">
+            <div class="logo">
+                <a href="{% url 'chopee:home' %}">
+                    <i class="fa-solid fa-bag-shopping"></i> Chopee
+                </a>
+            </div>
+            <div class="search-bar">
+                <form action="#" method="GET">
+                    <input type="text" placeholder="Search products, brands, shops…" id="searchInput">
+                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> SEARCH</button>
+                </form>
+            </div>
+            <div class="header-actions">
+                <a href="{% url 'chopee:cart' %}" class="cart-icon" id="cartBtn">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    {% if cart_count %}<span class="cart-badge">{{ cart_count }}</span>{% endif %}
+                </a>
+                <a href="#" class="user-menu">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Login</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="header-nav">
+        <div class="header-container">
+            <a href="#">Free Shipping Today</a>
+            <a href="#">Chopee Mall</a>
+            <a href="#">Flash Deals</a>
+            <a href="#">Vouchers</a>
+            <a href="#">Top Up</a>
+            <a href="#">Download App</a>
+        </div>
+    </div>
+</header>
+
+<main class="main-content">
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="chopee-footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>Customer Service</h4>
+            <ul>
+                <li><a href="#">Help Centre</a></li>
+                <li><a href="#">How To Buy</a></li>
+                <li><a href="#">Return &amp; Refund</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>About Chopee</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms &amp; Conditions</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Payment</h4>
+            <div class="payment-icons">
+                <i class="fa-brands fa-cc-visa"></i>
+                <i class="fa-brands fa-cc-mastercard"></i>
+                <i class="fa-brands fa-cc-paypal"></i>
+            </div>
+            <h4 style="margin-top:16px">Follow Us</h4>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Chopee. All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

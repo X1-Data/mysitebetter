@@ -1,0 +1,88 @@
+{% extends 'chopee/base.html' %}
+
+{% block title %}{{ product.name }} - Chopee{% endblock %}
+
+{% block content %}
+<div class="breadcrumb-bar">
+    <a href="{% url 'chopee:home' %}">Home</a>
+    <i class="fa-solid fa-chevron-right"></i>
+    <span>{{ product.name }}</span>
+</div>
+
+<div class="product-detail-container">
+    <div class="product-detail-card">
+        <!-- Image -->
+        <div class="product-image-large">
+            <img src="{{ product.image }}" alt="{{ product.name }}" id="mainImage">
+        </div>
+
+        <!-- Info -->
+        <div class="product-info-large">
+            <h1 class="product-title">{{ product.name }}</h1>
+
+            <div class="product-stats">
+                <span class="rating"><i class="fa-solid fa-star"></i> {{ product.rating }}</span>
+                <span class="divider">|</span>
+                <span>{{ product.sales }} Sold</span>
+            </div>
+
+            <div class="product-price-large">
+                {% if product.original_price %}
+                <span class="original-price">฿{{ product.original_price }}</span>
+                {% endif %}
+                <span class="current-price">฿{{ product.price }}</span>
+                {% if product.discount %}
+                <span class="discount-badge-large">{{ product.discount }}% OFF</span>
+                {% endif %}
+            </div>
+
+            <div class="product-shipping-info">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Free Shipping · Estimated delivery: 2-3 days</span>
+            </div>
+
+            <div class="product-description">
+                <h4>Product Description</h4>
+                <p>{{ product.description }}</p>
+            </div>
+
+            <div class="product-actions">
+                <form action="{% url 'chopee:add_to_cart' product.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline btn-large">
+                        <i class="fa-solid fa-cart-plus"></i> Add To Cart
+                    </button>
+                </form>
+                <form action="{% url 'chopee:add_to_cart' product.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fa-solid fa-bolt"></i> Buy Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Products -->
+<section class="related-section">
+    <h3 class="section-title">You May Also Like</h3>
+    <div class="related-grid">
+        {% for r in related %}
+        <a href="{% url 'chopee:product_detail' r.id %}" class="product-card">
+            <div class="product-image">
+                <img src="{{ r.image }}" alt="{{ r.name }}" loading="lazy">
+                {% if r.discount %}<span class="discount-badge">-{{ r.discount }}%</span>{% endif %}
+            </div>
+            <div class="product-info">
+                <h4 class="product-name">{{ r.name }}</h4>
+                <div class="product-meta">
+                    <span class="product-price">฿{{ r.price }}</span>
+                    <span class="sales-count">{{ r.sales }} sold</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

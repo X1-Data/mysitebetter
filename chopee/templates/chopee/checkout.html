@@ -1,0 +1,93 @@
+{% extends 'chopee/base.html' %}
+
+{% block title %}Checkout - Chopee{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <h2><i class="fa-solid fa-lock"></i> Checkout</h2>
+
+    <div class="checkout-layout">
+        <div class="checkout-form-section">
+            <div class="checkout-card">
+                <h3><i class="fa-solid fa-location-dot"></i> Delivery Address</h3>
+                <form action="{% url 'chopee:checkout' %}" method="POST" id="checkoutForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required class="form-control" placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="08X-XXX-XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Full Address</label>
+                        <textarea id="address" name="address" rows="3" required class="form-control" placeholder="House no, Street, Sub-district, District, Province, Postcode"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="checkout-card mt-4">
+                <h3><i class="fa-solid fa-credit-card"></i> Payment Method</h3>
+                <div class="payment-options">
+                    <label class="payment-option selected">
+                        <input type="radio" name="payment" value="cod" checked>
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                        <span>Cash on Delivery</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="card">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <span>Credit / Debit Card</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="qr">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <span>QR Payment</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkout-summary-section">
+            <div class="checkout-card order-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-items">
+                    {% for item in items %}
+                    <div class="summary-item">
+                        <span class="item-name">{{ item.product.name }} (x{{ item.quantity }})</span>
+                        <span>฿{{ item.subtotal }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="summary-totals">
+                    <div class="total-row">
+                        <span>Merchandise Subtotal</span>
+                        <span>฿{{ total }}</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Shipping</span>
+                        <span class="text-green">FREE</span>
+                    </div>
+                    <div class="total-row final-total">
+                        <span>Total Payment</span>
+                        <span class="text-primary">฿{{ total }}</span>
+                    </div>
+                </div>
+                <button type="submit" form="checkoutForm" class="btn btn-primary btn-block btn-place-order">
+                    <i class="fa-solid fa-bag-shopping"></i> Place Order
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.payment-option').forEach(opt => {
+    opt.addEventListener('click', function() {
+        document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+    });
+});
+</script>
+{% endblock %}

@@ -15,28 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.http import HttpResponse
+from django.urls import path, include
+from django.http import HttpResponse,JsonResponse,FileResponse
 from django.shortcuts import render
-
-
-
-def info(request) :
-    ip_address = request.META['REMOTE_ADDR']
-    res_text = f"<h1> IP address ของเจ้าคือ {ip_address} </h1>"
-    
-    for k,v in request.META.items() :
-        res_text += f"<p>{k} : {v} </p>"
-
-    return HttpResponse(res_text) 
-
-
-
-def home(request):
-    return render(request,'index.html')
+from django.utils import datastructures
+from . import views
 
 urlpatterns = [
-    path('',home),
-    path('info/',info),
+    path('home',views.home),
+    path('info/',views.info),
     path('admin/', admin.site.urls),
+    path('DSSI/',views.DSSI),
+    path('chopee/', include('chopee.urls')),
 ]

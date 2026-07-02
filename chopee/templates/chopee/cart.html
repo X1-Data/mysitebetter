@@ -1,0 +1,65 @@
+{% extends 'chopee/base.html' %}
+
+{% block title %}My Cart - Chopee{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <h2><i class="fa-solid fa-cart-shopping"></i> My Cart</h2>
+
+    {% if items %}
+    <div class="cart-header">
+        <div class="col-product">Product</div>
+        <div class="col-price">Unit Price</div>
+        <div class="col-qty">Qty</div>
+        <div class="col-total">Total</div>
+        <div class="col-action">Action</div>
+    </div>
+
+    {% for item in items %}
+    <div class="cart-row">
+        <div class="col-product">
+            <div class="cart-item-info">
+                <img src="{{ item.product.image }}" alt="{{ item.product.name }}">
+                <div>
+                    <a href="{% url 'chopee:product_detail' item.product.id %}">{{ item.product.name }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-price">฿{{ item.product.price }}</div>
+        <div class="col-qty">
+            <div class="qty-control">
+                <span>{{ item.quantity }}</span>
+            </div>
+        </div>
+        <div class="col-total">฿{{ item.subtotal }}</div>
+        <div class="col-action">
+            <a href="{% url 'chopee:remove_from_cart' item.product.id %}" class="btn-text text-danger">
+                <i class="fa-solid fa-trash"></i> Remove
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div class="cart-summary">
+        <div class="summary-left">
+            <span>{{ items|length }} item(s) in cart</span>
+        </div>
+        <div class="summary-right">
+            <div class="total-text">
+                Total: <span class="total-amount">฿{{ total }}</span>
+            </div>
+            <a href="{% url 'chopee:checkout' %}" class="btn btn-primary btn-checkout">
+                <i class="fa-solid fa-lock"></i> Check Out
+            </a>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="empty-cart">
+        <i class="fa-solid fa-cart-arrow-down fa-4x"></i>
+        <p>Your shopping cart is empty.</p>
+        <a href="{% url 'chopee:home' %}" class="btn btn-primary">Go Shopping Now</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
