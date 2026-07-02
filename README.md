@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # mysite 2026
 
 # คำสั่งที่ใช้run server
@@ -15,3 +16,6 @@
    HEAD: คอนเซปต์เดียวกับ GET แต่เซิร์ฟเวอร์จะคืนค่ากลับมาเฉพาะ Header โดยไม่มี 
    BodyOPTIONS: ใช้ตรวจสอบว่า Server หรือ API นั้นรองรับ Method ใดบ้าง 
    TRACE: ใช้สำหรับทดสอบการสื่อสารปลายทาง โดย Server จะสะท้อน Request กลับมาให้ Client เพื่อตรวจสอบเส้นทาง
+=======
+# mysitebetter
+>>>>>>> 46e2de5f6aed9aea69e33f25199b09bd363f1dba
